@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dreamsy - Quick and Creative StoryBot</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      padding: 1rem;
+      text-align: center;
+      background-color: #1e1e1e;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      margin: 0;
+      color: #00ffff;
+    }
+
+    .mood {
+      margin-top: 5px;
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+
+    .chat-box {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .bubble {
+      max-width: 70%;
+      padding: 1rem;
+      margin-bottom: 10px;
+      border-radius: 15px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .user {
+      background-color: #2c2c2c;
+      align-self: flex-end;
+      margin-left: auto;
+      border-bottom-right-radius: 0;
+    }
+
+    .bot {
+      background-color: #1a1a1a;
+      align-self: flex-start;
+      margin-right: auto;
+      border-bottom-left-radius: 0;
+      border-left: 4px solid #00ffff;
+    }
+
+    form {
+      display: flex;
+      padding: 1rem;
+      background-color: #1e1e1e;
+      border-top: 1px solid #333;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background-color: #2a2a2a;
+      color: white;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 16px;
+      margin-left: 10px;
+      background-color: #0a84ff;
+      border: none;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #006edc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>💬 Dreamsy</h1>
+    <div class="mood">Current Mood: {{ mood }}</div>
+  </header>
+
+  <div class="chat-box">
+    {% for sender, message in chat %}
+      <div class="bubble {{ 'user' if sender == 'You' else 'bot' }}">
+        <strong>{{ sender }}:</strong><br>{{ message }}
+      </div>
+    {% endfor %}
+  </div>
+
+  <form method="POST">
+    <input type="text" name="message" placeholder="Type your message..." required autocomplete="off">
+    <button type="submit">Send</button>
+  </form>
+<script>
+  window.onload = function () {
+    const chatBox = document.querySelector('.chat-box');
+    chatBox.scrollTop = chatBox.scrollHeight;
+  };
+  window.addEventListener("beforeunload", function () {
+    // Make a request to clear session before tab closes
+    navigator.sendBeacon("/clear_session");
+  });
+</script>
+</body>
+</html>
