@@ -4,5 +4,4 @@ google-generativeai
 transformers
 torch
 gunicorn
-replicate
 requests
