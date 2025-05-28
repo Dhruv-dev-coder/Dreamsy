@@ -63,6 +63,18 @@
       border-left: 4px solid #00ffff;
     }
 
+    .video-container {
+      margin: 10px 0;
+      max-width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .video-container video {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+
     form {
       display: flex;
       padding: 1rem;
@@ -107,6 +119,14 @@
     {% for sender, message in chat %}
       <div class="bubble {{ 'user' if sender == 'You' else 'bot' }}">
         <strong>{{ sender }}:</strong><br>{{ message }}
+        {% if sender == 'Dreamsy' and video_url %}
+          <div class="video-container">
+            <video autoplay loop muted playsinline>
+              <source src="{{ video_url }}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        {% endif %}
       </div>
     {% endfor %}
   </div>
@@ -121,7 +141,6 @@
     chatBox.scrollTop = chatBox.scrollHeight;
   };
   window.addEventListener("beforeunload", function () {
-    // Make a request to clear session before tab closes
     navigator.sendBeacon("/clear_session");
   });
 </script>
